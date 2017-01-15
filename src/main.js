@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 
-/* eslint-disable no-new */
+// import some global styles
+import './styles/style.scss';
+
 new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: { App }
-})
+    el: '#app',
+    render: h => h(App)
+});
