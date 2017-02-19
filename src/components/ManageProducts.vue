@@ -2,10 +2,13 @@
     <section>
         <save-product-form
                 :product="productInForm"
+                :edit-mode="editMode"
                 @submit="onFormSave"
+                @cancel="resetProductInForm"
         ></save-product-form>
         <product-list
-                :products="products">
+                :products="products"
+                @edit="onEditClicked">
         </product-list>
     </section>
 </template>
@@ -23,6 +26,7 @@
                 description: '',
                 price: null
             },
+            editMode: false,
             products: [
                 {
                     id: 'cc919e21-ae5b-5e1f-d023-c40ee669520c',
@@ -57,15 +61,37 @@
 
         methods: {
             onFormSave(product) {
-                // Generate an id using the third-party lib 'uuid'
-                product.id = uuid.v4();
-                // add it to the product list
-                this.products.push(product);
+                let index = this.products.findIndex((p) => p.id === product.id);
+
+                // update product if it exists or create it if it doesn't
+                if (index !== -1) {
+                    // We need to replace the array entirely so that vue can recognize
+                    // the change and re-render entirely.
+                    // See http://vuejs.org/guide/list.html#Caveats
+                    this.products.splice(index, 1, product)
+                } else {
+                    // Generate an id using the third-party lib 'uuid'
+                    product.id = uuid.v4();
+                    // add it to the product list
+                    this.products.push(product);
+                }
+
                 // reset the form
                 this.resetProductInForm();
             },
 
+            onEditClicked(product) {
+                // We turn on edit mode.
+                this.editMode = true;
+
+                // since objects are passed by reference we need to clone the product
+                // either by using Object.assign({}, product) or by using object
+                // spread like we do here.
+                this.productInForm = {...product};
+            },
+
             resetProductInForm() {
+                this.editMode = false;
                 this.productInForm = initialData().productInForm;
             }
         }
