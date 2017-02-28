@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-hover product-table">
+    <table class="table table-hover product-table" v-if="hasProducts">
         <thead>
         <th>Name</th>
         <th>Description</th>
@@ -10,6 +10,11 @@
             <td>{{ product.name }}</td>
             <td>{{ product.description }}</td>
             <td>{{ product.price }}</td>
+            <td>
+                <a href="javascript:" @click.prevent.stop="onRemove(product)">
+                    remove
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -20,9 +25,19 @@
     export default {
         props: ['products'],
 
+        computed: {
+            hasProducts() {
+                return this.products.length > 0;
+            }
+        },
+
         methods: {
             onEdit(product) {
                 this.$emit('edit', product);
+            },
+
+            onRemove(product) {
+                this.$emit('remove', product)
             }
         }
     }

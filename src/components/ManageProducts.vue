@@ -8,7 +8,8 @@
         ></save-product-form>
         <product-list
                 :products="products"
-                @edit="onEditClicked">
+                @edit="onEditClicked"
+                @remove="onRemoveClicked">
         </product-list>
     </section>
 </template>
@@ -88,6 +89,19 @@
                 // either by using Object.assign({}, product) or by using object
                 // spread like we do here.
                 this.productInForm = {...product};
+            },
+
+            onRemoveClicked(product) {
+                // Find the Index.
+                let index = this.products.findIndex(p => p.id === product.id);
+
+                // Remove Product from array.
+                this.products.splice(index, 1);
+
+                // Reset form if needed.
+                if (product.id === this.productInForm.id) {
+                    this.resetProductInForm();
+                }
             },
 
             resetProductInForm() {
