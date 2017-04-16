@@ -2,13 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import router from './components/Router/Router';
+import store from './vuex/store';
 
-import VueRouter from 'vue-router';
-
-// import some global styles
+// Import some global styles.
 import './styles/style.scss';
 
 new Vue({
     el: '#app',
+    store,
+    router,
     render: h => h(App)
 });

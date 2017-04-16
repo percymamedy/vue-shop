@@ -1,16 +1,21 @@
 <template>
-    <div id="app">
-        <manage-products></manage-products>
+    <div>
+        <header class="app-header">
+            <app-nav></app-nav>
+        </header>
+        <main class="container">
+            <router-view></router-view>
+        </main>
     </div>
 </template>
 
 <script>
-    import ManageProducts from './components/ManageProducts';
+    import AppNav from './components/AppNav';
 
     export default {
         name: 'app',
         components: {
-            ManageProducts
+            AppNav
         }
     }
 </script>
